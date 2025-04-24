@@ -2,6 +2,9 @@
 
 ---
 
+# Project
+This project is based on [IsaacLab](https://github.com/NVIDIA-Omniverse/IsaacLab), which is licensed under a dual license: BSD-3-Clause or Apache-2.0. You may choose either license that suits your needs.
+
 # Isaac Lab
 
 [![IsaacSim](https://img.shields.io/badge/IsaacSim-4.5.0-silver.svg)](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html)
@@ -13,11 +16,6 @@
 [![License](https://img.shields.io/badge/license-BSD--3-yellow.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![License](https://img.shields.io/badge/license-Apache--2.0-yellow.svg)](https://opensource.org/license/apache-2-0)
 
-
-**Project** 
-This project is based on [IsaacLab](https://github.com/NVIDIA-Omniverse/IsaacLab), which is licensed under a dual license: BSD-3-Clause or Apache-2.0. You may choose either license that suits your needs.
-
-Modifications and additional content in this repository are also licensed under the Apache License 2.0.
 
 **Isaac Lab** is a GPU-accelerated, open-source framework designed to unify and simplify robotics research workflows, such as reinforcement learning, imitation learning, and motion planning. Built on [NVIDIA Isaac Sim](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html), it combines fast and accurate physics and sensor simulation, making it an ideal choice for sim-to-real transfer in robotics.
 
