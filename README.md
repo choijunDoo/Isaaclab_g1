@@ -14,6 +14,11 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-yellow.svg)](https://opensource.org/license/apache-2-0)
 
 
+**Project** 
+This project is based on [IsaacLab](https://github.com/NVIDIA-Omniverse/IsaacLab), which is licensed under a dual license: BSD-3-Clause or Apache-2.0. You may choose either license that suits your needs.
+
+Modifications and additional content in this repository are also licensed under the Apache License 2.0.
+
 **Isaac Lab** is a GPU-accelerated, open-source framework designed to unify and simplify robotics research workflows, such as reinforcement learning, imitation learning, and motion planning. Built on [NVIDIA Isaac Sim](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html), it combines fast and accurate physics and sensor simulation, making it an ideal choice for sim-to-real transfer in robotics.
 
 Isaac Lab provides developers with a range of essential features for accurate sensor simulation, such as RTX-based cameras, LIDAR, or contact sensors. The framework's GPU acceleration enables users to run complex simulations and computations faster, which is key for iterative processes like reinforcement learning and data-intensive tasks. Moreover, Isaac Lab can run locally or be distributed across the cloud, offering flexibility for large-scale deployments.
@@ -81,20 +86,3 @@ contributions can make a significant impact on the Isaac Lab community and beyon
 ## License
 
 The Isaac Lab framework is released under [BSD-3 License](LICENSE). The `isaaclab_mimic` extension and its corresponding standalone scripts are released under [Apache 2.0](LICENSE-mimic). The license files of its dependencies and assets are present in the [`docs/licenses`](docs/licenses) directory.
-
-## Acknowledgement
-
-Isaac Lab development initiated from the [Orbit](https://isaac-orbit.github.io/) framework. We would appreciate if you would cite it in academic publications as well:
-
-```
-@article{mittal2023orbit,
-   author={Mittal, Mayank and Yu, Calvin and Yu, Qinxi and Liu, Jingzhou and Rudin, Nikita and Hoeller, David and Yuan, Jia Lin and Singh, Ritvik and Guo, Yunrong and Mazhar, Hammad and Mandlekar, Ajay and Babich, Buck and State, Gavriel and Hutter, Marco and Garg, Animesh},
-   journal={IEEE Robotics and Automation Letters},
-   title={Orbit: A Unified Simulation Framework for Interactive Robot Learning Environments},
-   year={2023},
-   volume={8},
-   number={6},
-   pages={3740-3747},
-   doi={10.1109/LRA.2023.3270034}
-}
-```

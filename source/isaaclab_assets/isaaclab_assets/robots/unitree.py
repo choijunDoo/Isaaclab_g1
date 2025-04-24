@@ -386,3 +386,97 @@ G1_MINIMAL_CFG.spawn.usd_path = f"{ISAACLAB_NUCLEUS_DIR}/Robots/Unitree/G1/g1_mi
 
 This configuration removes most collision meshes to speed up simulation.
 """
+
+G1_WITH_HAND_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path="E://isaaclab/unitree_ros/robots/g1_description/g1_29dof_rev_1_0_with_inspire_hand_FTP/g1_29dof_rev_1_0_with_inspire_hand_FTP.usd",
+        activate_contact_sensors=True,
+        rigid_props=sim_utils.RigidBodyPropertiesCfg(
+            disable_gravity=False,
+            retain_accelerations=False,
+            linear_damping=0.0,
+            angular_damping=0.0,
+            max_linear_velocity=1000.0,
+            max_angular_velocity=1000.0,
+            max_depenetration_velocity=1.0,
+        ),
+        articulation_props=sim_utils.ArticulationRootPropertiesCfg(
+            enabled_self_collisions=False,
+            solver_position_iteration_count=8,
+            solver_velocity_iteration_count=4,
+        ),
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, -0.5, 0.0),
+        joint_pos={
+            "left_hip_pitch_joint": 0.0,
+            "right_hip_pitch_joint": 0.0,
+            "left_knee_joint": 0.0,
+            "right_knee_joint": 0.0,
+            "left_ankle_pitch_joint": 0.0,
+            "right_ankle_pitch_joint": 0.0,
+
+            "left_shoulder_roll_joint": 0.16,
+            "left_shoulder_pitch_joint": 0.5,
+            "right_shoulder_roll_joint": -0.16,
+            "right_shoulder_pitch_joint": 0.35,
+            "left_elbow_joint": 1.0,
+            "right_elbow_joint": 1.0,
+
+            "left_index_1_joint": 0.2,
+            "right_index_1_joint": 0.2,
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=0.9,
+    actuators={
+        "legs": ImplicitActuatorCfg(
+            joint_names_expr=[".*_hip_.*", ".*_knee_.*", ".*_ankle_.*"],
+            effort_limit_sim=0,
+            stiffness=1e9,
+            damping=1e9,
+        ),
+        "waist": ImplicitActuatorCfg(
+            joint_names_expr=[
+                "waist_yaw_joint", "waist_roll_joint", "waist_pitch_joint"
+            ],
+            effort_limit_sim=150,
+            stiffness=100.0,
+            damping=3.0,
+            armature=0.01,
+        ),
+        "arms": ImplicitActuatorCfg(
+            joint_names_expr=[
+                "left_shoulder_.*", "right_shoulder_.*",
+                "left_elbow_joint", "right_elbow_joint",
+                "left_wrist_.*", "right_wrist_.*",
+            ],
+            effort_limit_sim=200,
+            stiffness=80.0,
+            damping=3.0,
+            armature=0.005,
+        ),
+        "hands_left": ImplicitActuatorCfg(
+            joint_names_expr=[
+                "left_index_.*", "left_middle_.*", "left_ring_.*",
+                "left_little_.*", "left_thumb_.*"
+            ],
+            effort_limit_sim=15,
+            stiffness=5.0,
+            damping=1.0,
+            armature=0.001,
+        ),
+        "hands_right": ImplicitActuatorCfg(
+            joint_names_expr=[
+                "right_index_.*", "right_middle_.*", "right_ring_.*",
+                "right_little_.*", "right_thumb_.*"
+            ],
+            effort_limit_sim=15,
+            stiffness=5.0,
+            damping=1.0,
+            armature=0.001,
+        ),
+    },
+)
+
+"""Configuration for Unitree G1 robot with Inspire FTP Hands."""
