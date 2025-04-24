@@ -3,7 +3,7 @@
 ---
 
 # Project
-This project is based on [IsaacLab](https://github.com/NVIDIA-Omniverse/IsaacLab), which is licensed under a dual license: BSD-3-Clause or Apache-2.0. You may choose either license that suits your needs.
+This project is based on [IsaacLab](https://github.com/isaac-sim/IsaacLab), which is licensed under a dual license: BSD-3-Clause or Apache-2.0. You may choose either license that suits your needs.
 
 # Isaac Lab
 
