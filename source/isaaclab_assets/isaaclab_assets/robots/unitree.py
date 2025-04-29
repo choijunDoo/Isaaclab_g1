@@ -387,9 +387,10 @@ G1_MINIMAL_CFG.spawn.usd_path = f"{ISAACLAB_NUCLEUS_DIR}/Robots/Unitree/G1/g1_mi
 This configuration removes most collision meshes to speed up simulation.
 """
 
+
 G1_WITH_HAND_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path="E://isaaclab/unitree_ros/robots/g1_description/g1_29dof_rev_1_0_with_inspire_hand_FTP/g1_29dof_rev_1_0_with_inspire_hand_FTP.usd",
+        usd_path=r"C:\\Users\\woojy\\Documents\\0.SCI\\isaaclab\\IsaacLab\\unitree_ros\\robots\\g1_description\\g1_29dof_rev_1_0_with_inspire_hand_FTP\g1_29dof_rev_1_0_with_inspire_hand_FTP.usd",
         activate_contact_sensors=True,
         rigid_props=sim_utils.RigidBodyPropertiesCfg(
             disable_gravity=False,
@@ -401,21 +402,27 @@ G1_WITH_HAND_CFG = ArticulationCfg(
             max_depenetration_velocity=1.0,
         ),
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(
-            enabled_self_collisions=False,
+            enabled_self_collisions=True,
             solver_position_iteration_count=8,
             solver_velocity_iteration_count=4,
         ),
     ),
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, -0.5, 0.0),
+        pos=(-0.5, 0.0, 0.0),
         joint_pos={
             "left_hip_pitch_joint": 0.0,
             "right_hip_pitch_joint": 0.0,
+            ".*_hip_roll_joint" : 0.0,
+            ".*_hip_yaw_joint" : 0.0,
             "left_knee_joint": 0.0,
             "right_knee_joint": 0.0,
             "left_ankle_pitch_joint": 0.0,
+            "left_ankle_roll_joint": 0.0,
             "right_ankle_pitch_joint": 0.0,
-
+            "right_ankle_roll_joint": 0.0,
+            "waist_pitch_joint" : 0.0,
+            "waist_roll_joint" : 0.0,
+            "waist_yaw_joint" : 0.0,
             "left_shoulder_roll_joint": 0.16,
             "left_shoulder_pitch_joint": 0.5,
             "right_shoulder_roll_joint": -0.16,
@@ -432,7 +439,20 @@ G1_WITH_HAND_CFG = ArticulationCfg(
     actuators={
         "legs": ImplicitActuatorCfg(
             joint_names_expr=[".*_hip_.*", ".*_knee_.*", ".*_ankle_.*"],
-            effort_limit_sim=0,
+            effort_limit_sim = {
+                ".*_hip_pitch_joint" : 88,
+                ".*_hip_roll_joint" : 139,
+                ".*_hip_yaw_joint" : 88,
+                ".*_knee_joint" : 139,
+                ".*_ankle_pitch_joint" : 35,
+            },
+            velocity_limit_sim = {
+                ".*_hip_pitch_joint" : 32,
+                ".*_hip_roll_joint" : 20,
+                ".*_hip_yaw_joint" : 32,
+                ".*_knee_joint" : 20,
+                ".*_ankle_.*_joint" : 30,
+            },
             stiffness=1e9,
             damping=1e9,
         ),
@@ -440,7 +460,16 @@ G1_WITH_HAND_CFG = ArticulationCfg(
             joint_names_expr=[
                 "waist_yaw_joint", "waist_roll_joint", "waist_pitch_joint"
             ],
-            effort_limit_sim=150,
+            effort_limit_sim = {
+                "waist_yaw_joint" : 88,
+                "waist_roll_joint" : 35,
+                "waist_pitch_joint" : 35, 
+            },
+            velocity_limit_sim = {
+                "waist_yaw_joint" : 32,
+                "waist_roll_joint" : 30,
+                "waist_pitch_joint" : 30,
+            },
             stiffness=100.0,
             damping=3.0,
             armature=0.01,
@@ -451,7 +480,20 @@ G1_WITH_HAND_CFG = ArticulationCfg(
                 "left_elbow_joint", "right_elbow_joint",
                 "left_wrist_.*", "right_wrist_.*",
             ],
-            effort_limit_sim=200,
+            effort_limit_sim = {
+                ".*_shoulder_.*" : 25,
+                ".*_elbow_joint" : 25,
+                ".*_wrist_roll_joint" : 25,
+                ".*_wrist_yaw_joint" : 5,
+                ".*_wrist_pitch_joint" : 5,
+            },
+            velocity_limit_sim = {
+                ".*_shoulder_.*" : 37,
+                ".*_elbow_joint" : 37,
+                ".*_wrist_roll_joint" : 37,
+                ".*_wrist_yaw_joint" : 22,
+                ".*_wrist_pitch_joint" : 22,
+            },
             stiffness=80.0,
             damping=3.0,
             armature=0.005,
@@ -461,7 +503,21 @@ G1_WITH_HAND_CFG = ArticulationCfg(
                 "left_index_.*", "left_middle_.*", "left_ring_.*",
                 "left_little_.*", "left_thumb_.*"
             ],
-            effort_limit_sim=15,
+            effort_limit_sim = {
+                "left_index_.*" : 10,
+                "left_middle_.*" : 10,
+                "left_ring_.*" : 10,
+                "left_little_.*" : 10,
+                "left_thumb_.*" : 10,
+
+            },
+            velocity_limit_sim = {
+                "left_index_.*" : 1,
+                "left_middle_.*" : 1,
+                "left_ring_.*" : 1,
+                "left_little_.*" : 1,
+                "left_thumb_.*" : 1,
+            },
             stiffness=5.0,
             damping=1.0,
             armature=0.001,
@@ -471,7 +527,21 @@ G1_WITH_HAND_CFG = ArticulationCfg(
                 "right_index_.*", "right_middle_.*", "right_ring_.*",
                 "right_little_.*", "right_thumb_.*"
             ],
-            effort_limit_sim=15,
+            effort_limit_sim = {
+                "right_index_.*" : 10,
+                "right_middle_.*" : 10,
+                "right_ring_.*" : 10,
+                "right_little_.*" : 10,
+                "right_thumb_.*" : 10,
+
+            },
+            velocity_limit_sim = {
+                "right_index_.*" : 1,
+                "right_middle_.*" : 1,
+                "right_ring_.*" : 1,
+                "right_little_.*" : 1,
+                "right_thumb_.*" : 1,
+            },
             stiffness=5.0,
             damping=1.0,
             armature=0.001,

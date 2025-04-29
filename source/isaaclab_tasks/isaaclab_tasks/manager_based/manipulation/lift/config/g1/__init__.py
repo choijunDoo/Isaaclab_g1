@@ -18,9 +18,9 @@ from . import agents
 gym.register(
     id="Isaac-Lift-G1-JointPos-v0",
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
-    disable_env_checker=True,
     kwargs={
-        "env_cfg_entry_point": f"{__name__}.joint_pos_env_cfg:JointPosEnvCfg",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:G1LiftPPORunnerCfg",
+        "env_cfg_entry_point": f"{__name__}.joint_pos_env_cfg:G1CubeLiftEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:LiftCubePPORunnerCfg",
     },
+    disable_env_checker=False
 )

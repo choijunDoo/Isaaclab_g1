@@ -1,3 +1,8 @@
+# Copyright (c) 2022-2025, The Isaac Lab Project Developers.
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 from isaaclab.assets import RigidObjectCfg
 from isaaclab.sensors import FrameTransformerCfg
 from isaaclab.sensors.frame_transformer.frame_transformer_cfg import OffsetCfg
@@ -9,45 +14,74 @@ from isaaclab.utils.assets import ISAAC_NUCLEUS_DIR
 from isaaclab_tasks.manager_based.manipulation.lift import mdp
 from isaaclab_tasks.manager_based.manipulation.lift.lift_env_cfg import LiftEnvCfg
 
+##
+# Pre-defined configs
+##
 from isaaclab.markers.config import FRAME_MARKER_CFG  # isort: skip
-from isaaclab_assets import G1_WITH_HAND_CFG  # isort: skip
+from isaaclab_assets.robots.unitree import G1_WITH_HAND_CFG  # isort: skip
+
 
 @configclass
-class JointPosEnvCfg(LiftEnvCfg):
+class G1CubeLiftEnvCfg(LiftEnvCfg):
     def __post_init__(self):
+        # post init of parent
         super().__post_init__()
 
-        # G1 + FTP Hands 로봇 설정
+        # Set g1 as robot
         self.scene.robot = G1_WITH_HAND_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
 
-        # G1용 arm 제어 (관절 제어)
+        # Set actions for the specific robot type (g1)
         self.actions.arm_action = mdp.JointPositionActionCfg(
             asset_name="robot",
             joint_names=[
-                ".*_shoulder_.*", ".*_elbow_.*", ".*_wrist_.*"
+                # ".*_hip_.*_joint",
+                # ".*_knee_joint",
+                # ".*_ankle_.*_joint",
+                "waist_.*_joint",
+                ".*_shoulder_.*_joint",
+                ".*_elbow_joint",
+                ".*_wrist_.*_joint",
+                # ".*_index_.*_joint",
+                # ".*_little_.*_joint",
+                # ".*_middle_.*_joint",
+                # ".*_ring_.*_joint",
+                # ".*_thumb_.*_joint",
             ],
-            scale=0.5,
+            scale=1.0,                  
             use_default_offset=True,
         )
-
-        # G1 손가락 이진 제어 (open/close)
         self.actions.gripper_action = mdp.BinaryJointPositionActionCfg(
             asset_name="robot",
-            joint_names=[".*_index_.*", ".*_thumb_.*", ".*_middle_.*", ".*_ring_.*", ".*_little_.*"],
-            open_command_expr={".*": 0.0},
-            close_command_expr={".*": 0.8},
+            joint_names=[                
+                "right_index_.*_joint",
+                "right_little_.*_joint",
+                "right_middle_.*_joint",
+                "right_ring_.*_joint",
+                "right_thumb_.*_joint",
+                ],
+            open_command_expr={    
+                "right_index_.*_joint": 0.8,
+                "right_little_.*_joint": 0.8,
+                "right_middle_.*_joint" : 0.8,
+                "right_ring_.*_joint" : 0.8,
+                "right_thumb_.*_joint" : 0.8},
+            close_command_expr={    
+                "right_index_.*_joint": 0.0,
+                "right_little_.*_joint": 0.0,
+                "right_middle_.*_joint" : 0.0,
+                "right_ring_.*_joint" : 0.0,
+                "right_thumb_.*_joint" : 0.0},
         )
+        # Set the body name for the end effector
+        self.commands.object_pose.body_name = "right_index_1"
 
-        # EEF 기준 링크 지정 (왼손 손바닥 기준)
-        self.commands.object_pose.body_name = "left_wrist_pitch_link"
-
-        # 들어 올릴 큐브 설정
+        # Set Cube as object
         self.scene.object = RigidObjectCfg(
             prim_path="{ENV_REGEX_NS}/Object",
-            init_state=RigidObjectCfg.InitialStateCfg(pos=[0.5, 0, 0.055], rot=[1, 0, 0, 0]),
+            init_state=RigidObjectCfg.InitialStateCfg(pos=[0.1, 0, 0.5], rot=[1, 0, 0, 0]),
             spawn=UsdFileCfg(
                 usd_path=f"{ISAAC_NUCLEUS_DIR}/Props/Blocks/DexCube/dex_cube_instanceable.usd",
-                scale=(0.8, 0.8, 0.8),
+                scale=(1.0,1.0,1.0),
                 rigid_props=RigidBodyPropertiesCfg(
                     solver_position_iteration_count=16,
                     solver_velocity_iteration_count=1,
@@ -59,19 +93,33 @@ class JointPosEnvCfg(LiftEnvCfg):
             ),
         )
 
-        # EE Frame Transformer 설정 (선택적 시각화)
+        # Listens to the required transforms
         marker_cfg = FRAME_MARKER_CFG.copy()
         marker_cfg.markers["frame"].scale = (0.1, 0.1, 0.1)
         marker_cfg.prim_path = "/Visuals/FrameTransformer"
         self.scene.ee_frame = FrameTransformerCfg(
-            prim_path="{ENV_REGEX_NS}/Robot/left_wrist_pitch_link",
+            prim_path="{ENV_REGEX_NS}/Robot/torso_link",
             debug_vis=False,
             visualizer_cfg=marker_cfg,
             target_frames=[
                 FrameTransformerCfg.FrameCfg(
-                    prim_path="{ENV_REGEX_NS}/Robot/left_index_1",
+                    prim_path="{ENV_REGEX_NS}/Robot/right_index_1",
                     name="end_effector",
-                    offset=OffsetCfg(pos=[0.0, 0.0, 0.05]),
+                    offset=OffsetCfg(
+                        pos=[0.0, 0.0, 0.1034],
+                    ),
                 ),
             ],
         )
+
+
+@configclass
+class G1CubeLiftEnvCfg_PLAY(G1CubeLiftEnvCfg):
+    def __post_init__(self):
+        # post init of parent
+        super().__post_init__()
+        # make a smaller scene for play
+        self.scene.num_envs = 50
+        self.scene.env_spacing = 2.5
+        # disable randomization for play
+        self.observations.policy.enable_corruption = False
